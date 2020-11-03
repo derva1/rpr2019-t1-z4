@@ -1,26 +1,30 @@
 package ba.unsa.etf.rpr;
 
 public class Korpa {
-    Artikl[] artikli = new Artikl[50];
-    int brojArtikala=0;
+    private Artikl[] artikli = new Artikl[50];
+    protected int brojArtikala=0;
 
 
     public boolean dodajArtikl(Artikl x){
-        if(brojArtikala>49) return false;
+        if(brojArtikala>49) {
+            return false;
+        }
         artikli[brojArtikala++] = new Artikl(x.getNaziv(),x.getCijena(),x.getKod());
         return true;
     }
     public Artikl[] getArtikli() {
         return artikli;
     }
-    public Artikl izbaciArtiklSaKodom(String kod){
-        for(int i=0;i<brojArtikala;i++){
-            if(artikli[i].getKod().equals(kod)){
-                if (brojArtikala - i >= 0) System.arraycopy(artikli, i + 1, artikli, i, brojArtikala - i);
+    public Artikl izbaciArtiklSaKodom(String kod) {
+        for (int i = 0; i < brojArtikala; i++)
+            if (artikli[i].getKod().equals(kod)) {
+                Artikl temp = new Artikl(artikli[i].getNaziv(), artikli[i].getCijena(), artikli[i].getKod());
+                for (int k = i; k < brojArtikala; k++) {
+                    artikli[k] = artikli[k + 1];
+                }
                 brojArtikala--;
-                return new Artikl(artikli[i].getNaziv(),artikli[i].getCijena(),artikli[i].getKod());
+                return temp;
             }
-        }
         return null;
     }
     public int dajUkupnuCijenuArtikala(){
